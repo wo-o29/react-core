@@ -1,10 +1,4 @@
-import {
-  Children,
-  HTMLNode,
-  Props,
-  PropsWithChildren,
-  TextNode,
-} from "./types";
+import { Children, HTMLNode, Props, FragmentNode, TextNode } from "./types";
 
 export const createElement = (
   type: string | Function, // HTML 태그, 함수형 컴포넌트, Fragment
@@ -37,6 +31,6 @@ const createTextElement = (text: string): TextNode => {
   };
 };
 
-export const Fragment = (props: Props): PropsWithChildren => {
-  return { type: "fragment", ...props, children: props.children };
+export const Fragment = (props: Props): FragmentNode => {
+  return { type: "fragment", props: { ...props, children: props.children } };
 };
