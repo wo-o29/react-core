@@ -1,10 +1,15 @@
 import fs from "fs";
+import path from "path";
 import { defineConfig } from "vite"; // vite 설정 정의
 
 export default defineConfig({
   esbuild: {
     jsxFactory: "createElement", // JSX를 변환할 때 사용할 함수 이름 지정
     jsxFragment: "Fragment", // Fragment(<></>)를 변환할 때 사용할 함수 이름 지정
+    jsxInject: `import { createElement, Fragment } from "${path.resolve(
+      __dirname,
+      "src/jsx"
+    )}"`, // 헬퍼 함수(자동 import)
   },
   optimizeDeps: {
     esbuildOptions: {
