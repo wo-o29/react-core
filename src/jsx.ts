@@ -23,11 +23,10 @@ export const createElement = (
 };
 
 const createTextElement = (text: string): TextNode => {
+  console.log(text);
   return {
     type: "textNode",
-    props: {
-      nodeValue: text,
-    },
+    text,
   };
 };
 

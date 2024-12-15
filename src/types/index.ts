@@ -20,9 +20,7 @@ export interface HTMLNode {
 // Text Node
 export interface TextNode {
   type: "textNode";
-  props: {
-    nodeValue: string;
-  };
+  text: string;
 }
 
 // Fragment Node
