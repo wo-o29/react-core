@@ -5,3 +5,10 @@ declare namespace JSX {
     [elementName: string]: any;
   }
 }
+
+declare function createElement(
+  type: string | Function,
+  props: Props | null,
+  ...children: Children
+): HTMLNode;
+declare function Fragment(props: Props): PropsWithChildren;
