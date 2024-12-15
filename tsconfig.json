@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "jsx": "react", // // React의 새로운 JSX 변환 방식
+    "jsxFactory": "createElement", // JSX 변환할 때 사용할 함수 지정
+    "jsxFragmentFactory": "Fragment", // 프래그먼트 변환할 때 사용할 함수 지정
+    "types": ["./global.d.ts"], // 전역 타입 선언 파일 지정
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -20,5 +24,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"] // 컴파일에 포함할 파일들 지정
 }
