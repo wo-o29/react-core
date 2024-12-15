@@ -7,7 +7,7 @@ declare namespace JSX {
 }
 
 declare function createElement(
-  type: string | Function,
+  type: HTMLTagName | Function,
   props: Props | null,
   ...children: Children
 ): HTMLNode;
