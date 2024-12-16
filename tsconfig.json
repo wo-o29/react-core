@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react", // // React의 새로운 JSX 변환 방식
+    "jsx": "preserve", // JSX 문법 유지
     "jsxFactory": "createElement", // JSX 변환할 때 사용할 함수 지정
     "jsxFragmentFactory": "Fragment", // 프래그먼트 변환할 때 사용할 함수 지정
     "types": ["./global.d.ts"], // 전역 타입 선언 파일 지정
