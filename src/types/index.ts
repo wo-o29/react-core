@@ -2,10 +2,10 @@
 export type HTMLTagName = keyof HTMLElementTagNameMap;
 
 // children 타입(HTMLNode, TextNode 요소로 이루어진 배열)
-export type Children = (HTMLNode | TextNode)[];
+export type Children = SingleChild[];
 
 // 단일 자식
-export type SingleChild = HTMLNode | TextNode;
+export type SingleChild = HTMLNode | TextNode | FragmentNode;
 
 // props
 export interface Props {
@@ -19,14 +19,16 @@ export interface PropsWithChildren extends Props {
 
 // HTML Node
 export interface HTMLNode {
-  type: string;
+  type: HTMLTagName;
   props: PropsWithChildren;
 }
 
 // Text Node
 export interface TextNode {
   type: "textNode";
-  text: string | number;
+  props: {
+    text: string | number;
+  };
 }
 
 // Fragment Node

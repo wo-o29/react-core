@@ -59,7 +59,9 @@ export const createElement = (
 const createTextElement = (text: string | number): TextNode => {
   return {
     type: "textNode",
-    text,
+    props: {
+      text,
+    },
   };
 };
 
