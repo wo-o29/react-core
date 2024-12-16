@@ -14,7 +14,7 @@ export interface Props {
 
 // props + children 객체
 export interface PropsWithChildren extends Props {
-  children: SingleChild | Children;
+  children?: SingleChild | Children;
 }
 
 // HTML Node
@@ -26,7 +26,7 @@ export interface HTMLNode {
 // Text Node
 export interface TextNode {
   type: "textNode";
-  text: string;
+  text: string | number;
 }
 
 // Fragment Node
