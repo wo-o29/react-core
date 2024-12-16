@@ -1,15 +1,24 @@
-// 전역 선언 파일 설정
+import {
+  HTMLTagName,
+  Children,
+  HTMLNode,
+  Props,
+  FragmentNode,
+  OnlyKeyProps,
+} from "./src/types";
 
-type HTMLTagName = keyof HTMLElementTagNameMap;
-declare namespace JSX {
-  type IntrinsicElements = {
-    [K in HTMLTagName]: any;
-  };
+declare global {
+  namespace JSX {
+    type IntrinsicElements = {
+      [K in HTMLTagName]: any;
+    };
+  }
+
+  declare function createElement(
+    type: HTMLTagName | Function,
+    props: Props | null,
+    ...children: Children
+  ): HTMLNode;
+
+  declare function Fragment(props: OnlyKeyProps): FragmentNode;
 }
-
-declare function createElement(
-  type: HTMLTagName | Function,
-  props: Props | null,
-  ...children: Children
-): HTMLNode;
-declare function Fragment(props: Props): PropsWithChildren;

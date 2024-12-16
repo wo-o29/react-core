@@ -6,6 +6,7 @@ import {
   FragmentNode,
   TextNode,
   SingleChild,
+  OnlyKeyProps,
 } from "./types";
 
 // React에서 무시되는 값 체크
@@ -65,7 +66,7 @@ const createTextElement = (text: string | number): TextNode => {
   };
 };
 
-export const Fragment = (props: Props): FragmentNode => {
+export const Fragment = (props: OnlyKeyProps): FragmentNode => {
   const childrenNodeList = (props.children as Children)
     .filter((child) => !isIgnoreValue(child))
     .map((child) =>

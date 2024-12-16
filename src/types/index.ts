@@ -31,8 +31,15 @@ export interface TextNode {
   };
 }
 
+type Key = string | number | bigint;
+
+export interface OnlyKeyProps {
+  key?: Key | null;
+  children?: SingleChild | Children;
+}
+
 // Fragment Node
 export interface FragmentNode {
   type: "fragment";
-  props: PropsWithChildren;
+  props: OnlyKeyProps | null;
 }
