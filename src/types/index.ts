@@ -1,11 +1,11 @@
 // HTML 태그만 모아놓은 타입
 export type HTMLTagName = keyof HTMLElementTagNameMap;
 
-// children 타입(HTMLNode, TextNode 요소로 이루어진 배열)
-export type Children = SingleChild[];
-
 // 단일 자식
 export type SingleChild = HTMLNode | TextNode | FragmentNode;
+
+// children 배열 타입
+export type Children = SingleChild[];
 
 // props
 export interface Props {
