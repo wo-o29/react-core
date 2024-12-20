@@ -1,8 +1,4 @@
 import App from "./App.tsx";
+import { createRoot } from "./dom/root.ts";
 
-const app = App();
-
-const appStr = JSON.stringify(app, null, 3);
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <pre>${appStr}</pre>
-`;
+createRoot(document.getElementById("app")!, App());
