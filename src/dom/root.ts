@@ -134,10 +134,12 @@ const attachEventListeners = (
 
   // 자식 요소들 이벤트 핸들러 처리
   if (Array.isArray(node.props.children)) {
+    // 자식이 여러개인 경우
     node.props.children.forEach((child) =>
       attachEventListeners(child, container)
     );
-  } else if (node.props.children && typeof node.props.children === "object") {
+  } else if (node.props.children) {
+    // 단일 자식인 경우
     attachEventListeners(node.props.children, container);
   }
 };
