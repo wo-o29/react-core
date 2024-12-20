@@ -8,7 +8,7 @@ export default defineConfig({
     jsxFragment: "Fragment", // Fragment(<></>)를 변환할 때 사용할 함수 이름 지정
     jsxInject: `import { createElement, Fragment } from "${path.resolve(
       __dirname,
-      "src/jsx"
+      "src/dom/jsx"
     )}"`, // 헬퍼 함수(자동 import)
   },
   optimizeDeps: {
