@@ -17,10 +17,14 @@ export interface PropsWithChildren extends Props {
   children?: SingleChild | Children;
 }
 
+export interface HTMLProps extends PropsWithChildren {
+  style: CSSStyleDeclaration;
+}
+
 // HTML Node
 export interface HTMLNode {
   type: HTMLTagName;
-  props: PropsWithChildren;
+  props: HTMLProps;
 }
 
 // Text Node

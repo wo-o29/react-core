@@ -59,8 +59,7 @@ const render = (node: VirtualNode): Node => {
   });
 
   if ("style" in node.props) {
-    const style = node.props.style as CSSStyleDeclaration;
-    Object.entries(style).forEach(([key, value]) => {
+    Object.entries(node.props.style).forEach(([key, value]) => {
       element.style.setProperty(camelCaseToKebabCase(key), value);
     });
   }
