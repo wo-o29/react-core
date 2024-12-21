@@ -1,4 +1,4 @@
-import { VirtualNode, HTMLNode } from "../types";
+import { VirtualNode, HTMLNode, SingleChild, Children } from "../types";
 import SyntheticEvent from "../event/SyntheticEvent";
 import { camelCaseToKebabCase } from "../util/converter";
 
@@ -14,6 +14,21 @@ export const createRoot = (
   attachEventListeners(rootElement, container); // 이벤트 연결(이벤트 위임 방식)
 };
 
+const renderToChild = (
+  parentElement: HTMLElement | DocumentFragment,
+  children: SingleChild | Children
+) => {
+  if (Array.isArray(children)) {
+    // 자식이 여러개인 경우
+    children.forEach((child) => {
+      parentElement.appendChild(render(child));
+    });
+    return;
+  }
+
+  parentElement.appendChild(render(children));
+};
+
 const render = (node: VirtualNode): Node => {
   if (node.type === "textNode") {
     // 텍스트 노드 처리
@@ -24,14 +39,8 @@ const render = (node: VirtualNode): Node => {
     // Fragment 처리
     const fragment = document.createDocumentFragment();
 
-    if (Array.isArray(node.props.children)) {
-      // 자식이 여러개인 경우
-      node.props.children.forEach((child) => {
-        fragment.appendChild(render(child));
-      });
-    } else if (node.props.children) {
-      // 단일 자식인 경우
-      fragment.appendChild(render(node.props.children));
+    if (node.props.children) {
+      renderToChild(fragment, node.props.children);
     }
 
     return fragment;
@@ -64,15 +73,8 @@ const render = (node: VirtualNode): Node => {
     });
   }
 
-  // 자식 요소 렌더링
-  if (Array.isArray(node.props.children)) {
-    // 자식이 여러개인 경우
-    node.props.children.forEach((child) => {
-      element.appendChild(render(child));
-    });
-  } else if (node.props.children) {
-    // 단일 자식인 경우
-    element.appendChild(render(node.props.children));
+  if (node.props.children) {
+    renderToChild(element, node.props.children);
   }
 
   return element;
