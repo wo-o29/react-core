@@ -7,7 +7,7 @@ import {
   TextNode,
   SingleChild,
   OnlyKeyProps,
-} from "./types";
+} from "../types";
 
 // React에서 무시되는 값 체크
 const isIgnoreValue = (value: any): boolean => {

@@ -41,5 +41,7 @@ export interface OnlyKeyProps {
 // Fragment Node
 export interface FragmentNode {
   type: "fragment";
-  props: OnlyKeyProps | null;
+  props: OnlyKeyProps;
 }
+
+export type VirtualNode = FragmentNode | HTMLNode | TextNode;

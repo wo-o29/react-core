@@ -10,7 +10,7 @@ import {
 declare global {
   namespace JSX {
     type IntrinsicElements = {
-      [K in HTMLTagName]: any;
+      [K in HTMLTagName]: HTMLTagName[K];
     };
   }
 
