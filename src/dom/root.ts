@@ -3,7 +3,8 @@ import SyntheticEvent from "../event/SyntheticEvent";
 import { camelCaseToKebabCase } from "../util/converter";
 
 // WeakMap을 사용하여 DOM 요소와 VirtualNode를 연결(객체에 대한 참조가 없을 경우 가바지 컬렉션에 의해 자동으로 제거)
-const elementToVirtualNode = new WeakMap<Element, VirtualNode>();
+let elementToVirtualNode = new WeakMap<Element, VirtualNode>();
+const uniqueEvent = new Set();
 
 export const createRoot = (
   container: Element | Document | DocumentFragment,
@@ -11,6 +12,8 @@ export const createRoot = (
 ) => {
   const root = render(rootElement); // 가상 DOM -> 실제 DOM 렌더링
   container.appendChild(root); // 컨테이너에 추가
+  elementToVirtualNode = new WeakMap<Element, VirtualNode>();
+  uniqueEvent.clear();
   attachEventListeners(rootElement, container); // 이벤트 연결(이벤트 위임 방식)
 };
 
@@ -83,8 +86,6 @@ const render = (node: VirtualNode): Node => {
   return element;
 };
 
-const uniqueEvent = new Set();
-
 const attachEventListeners = (
   node: VirtualNode, // 가상 DOM
   container: Element | Document | DocumentFragment
@@ -126,6 +127,7 @@ const attachEventListeners = (
   Object.entries(node.props).forEach(([key, value]) => {
     if (key.startsWith("on") && typeof value === "function") {
       const eventName = key.toLowerCase().substring(2);
+
       if (uniqueEvent.has(eventName)) {
         // 이미 해당 이벤트가 등록되어 있는 경우(이벤트 위임 방식이기 때문에 같은 이벤트를 등록하지 않아도 됨)
         return;
