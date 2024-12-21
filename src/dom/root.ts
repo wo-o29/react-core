@@ -14,19 +14,18 @@ export const createRoot = (
   attachEventListeners(rootElement, container); // 이벤트 연결(이벤트 위임 방식)
 };
 
-const renderToChild = (
-  parentElement: HTMLElement | DocumentFragment,
-  children: SingleChild | Children
+const processChildren = (
+  children: SingleChild | Children,
+  processFn: (child: SingleChild) => void
 ) => {
   if (Array.isArray(children)) {
-    // 자식이 여러개인 경우
     children.forEach((child) => {
-      parentElement.appendChild(render(child));
+      processFn(child);
     });
     return;
   }
 
-  parentElement.appendChild(render(children));
+  processFn(children);
 };
 
 const render = (node: VirtualNode): Node => {
@@ -40,7 +39,9 @@ const render = (node: VirtualNode): Node => {
     const fragment = document.createDocumentFragment();
 
     if (node.props.children) {
-      renderToChild(fragment, node.props.children);
+      processChildren(node.props.children, (child) =>
+        fragment.appendChild(render(child))
+      );
     }
 
     return fragment;
@@ -74,7 +75,9 @@ const render = (node: VirtualNode): Node => {
   }
 
   if (node.props.children) {
-    renderToChild(element, node.props.children);
+    processChildren(node.props.children, (child) =>
+      element.appendChild(render(child))
+    );
   }
 
   return element;
@@ -133,14 +136,9 @@ const attachEventListeners = (
     }
   });
 
-  // 자식 요소들 이벤트 핸들러 처리
-  if (Array.isArray(node.props.children)) {
-    // 자식이 여러개인 경우
-    node.props.children.forEach((child) =>
+  if (node.props.children) {
+    processChildren(node.props.children, (child) =>
       attachEventListeners(child, container)
     );
-  } else if (node.props.children) {
-    // 단일 자식인 경우
-    attachEventListeners(node.props.children, container);
   }
 };
