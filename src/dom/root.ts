@@ -1,6 +1,6 @@
 import { VirtualNode, HTMLNode } from "../types";
 import SyntheticEvent from "../event/SyntheticEvent";
-import { camelCaseToSnakeCase } from "../util/converter";
+import { camelCaseToKebabCase } from "../util/converter";
 
 // WeakMap을 사용하여 DOM 요소와 VirtualNode를 연결(객체에 대한 참조가 없을 경우 가바지 컬렉션에 의해 자동으로 제거)
 const elementToVirtualNode = new WeakMap<Element, VirtualNode>();
@@ -61,7 +61,7 @@ const render = (node: VirtualNode): Node => {
   if ("style" in node.props) {
     const style = node.props.style as CSSStyleDeclaration;
     Object.entries(style).forEach(([key, value]) => {
-      element.style.setProperty(camelCaseToSnakeCase(key), value);
+      element.style.setProperty(camelCaseToKebabCase(key), value);
     });
   }
 
