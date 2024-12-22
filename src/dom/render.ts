@@ -162,8 +162,6 @@ export const updateSchedule = () => {
 };
 
 export const applyDiff = (diff: DiffResult, node: HTMLElement | Text) => {
-  console.log(diff);
-
   // 변경사항이 없는 경우 함수 종료
   if (diff.type === "NO_CHANGE") {
     return;
