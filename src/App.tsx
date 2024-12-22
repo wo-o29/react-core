@@ -1,44 +1,26 @@
-import Header from "./components/Header";
-
-const tempList = ["react", "core", "render", "root"];
+// import Header from "./components/Header";
+import { useState } from "./hooks";
 
 function App() {
-  const handleButtonClick = () => {
-    console.log("button click!");
-  };
-
-  const handleSpanClick = (e: MouseEvent) => {
-    console.log("span click");
-    e.stopPropagation();
-  };
-
-  const handleListMouseOver = (value: any) => {
-    console.log(value);
-  };
+  const [state, setState] = useState(1);
+  const [state1, setState1] = useState(10);
+  const [state2, setState2] = useState(100);
 
   return (
-    <Fragment key="1">
-      <Header />
-      <h1 id="title" style={{ color: "red", fontSize: "50px" }}>
-        react-
-        <span onClick={handleSpanClick}>core</span>
-      </h1>
-      <ul
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          fontSize: "20px",
-        }}
-      >
-        {tempList.map((value) => (
-          <li onMouseOver={() => handleListMouseOver(value)}>{value}</li>
-        ))}
-      </ul>
-      <button className="button" type="button" onClick={handleButtonClick}>
-        버튼
-      </button>
-    </Fragment>
+    <>
+      <div>
+        <div>{state}</div>
+        <button onClick={() => setState((prev) => prev + 1)}>버튼</button>
+      </div>
+      <div>
+        <div>{state1}</div>
+        <button onClick={() => setState1((prev) => prev + 1)}>버튼</button>
+      </div>
+      <div>
+        <div>{state2}</div>
+        <button onClick={() => setState2((prev) => prev + 1)}>버튼</button>
+      </div>
+    </>
   );
 }
 

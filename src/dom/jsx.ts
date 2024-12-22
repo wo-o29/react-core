@@ -48,10 +48,7 @@ export const createElement = (
       ...config,
       // 처리 할 자식이 있다면 children 속성 생성(자식이 없는 경우는 속성 제거)
       ...(childrenNodeList.length > 0 && {
-        children:
-          childrenNodeList.length === 1
-            ? (childrenNodeList[0] as SingleChild)
-            : childrenNodeList,
+        children: childrenNodeList,
       }),
     },
   };

@@ -14,11 +14,11 @@ export interface Props {
 
 // props + children 객체
 export interface PropsWithChildren extends Props {
-  children?: SingleChild | Children;
+  children?: Children;
 }
 
 export interface HTMLProps extends PropsWithChildren {
-  style: CSSStyleDeclaration;
+  style?: CSSStyleDeclaration;
 }
 
 // HTML Node
@@ -35,17 +35,17 @@ export interface TextNode {
   };
 }
 
-type Key = string | number | bigint;
-
-export interface OnlyKeyProps {
-  key?: Key | null;
-  children?: SingleChild | Children;
-}
-
 // Fragment Node
 export interface FragmentNode {
   type: "fragment";
   props: OnlyKeyProps;
+}
+
+type Key = string | number | bigint;
+
+export interface OnlyKeyProps {
+  key?: Key | null;
+  children?: Children;
 }
 
 export type VirtualNode = FragmentNode | HTMLNode | TextNode;

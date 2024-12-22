@@ -1,4 +1,4 @@
 import App from "./App.tsx";
-import { createRoot } from "./dom/root.ts";
+import { createRoot } from "./dom/render.ts";
 
 createRoot(document.getElementById("app")!, App());
