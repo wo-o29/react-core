@@ -60,6 +60,7 @@ export const render = (node: VirtualNode): Node => {
   elementToVirtualNode.set(element, node); // 실제 DOM 요소와 VirtualNode 연결
 
   // 속성 처리
+
   Object.entries(node.props).forEach(([key, value]) => {
     if (key === "children" || key.startsWith("on")) {
       // children, 이벤트 핸들러 제외
@@ -133,6 +134,7 @@ const attachEventListeners = (
   };
 
   // 이벤트 핸들러 연결(컨테이너에 연결, 이벤트 위임 방식)
+
   Object.entries(node.props).forEach(([key, value]) => {
     if (key.startsWith("on") && typeof value === "function") {
       const eventName = key.toLowerCase().substring(2);
@@ -141,6 +143,13 @@ const attachEventListeners = (
         // 이미 해당 이벤트가 등록되어 있는 경우(이벤트 위임 방식이기 때문에 같은 이벤트를 등록하지 않아도 됨)
         return;
       }
+
+      // if (eventName === "change") {
+      //   // change 이벤트는 input, textarea, select 등에 대해 input 이벤트로 대체
+      //   container.addEventListener("input", (e) => handleEvent(e, key));
+      //   uniqueEvent.add("input");
+      //   return;
+      // }
 
       container.addEventListener(eventName, (e) => handleEvent(e, key));
       uniqueEvent.add(eventName);
@@ -155,10 +164,16 @@ const attachEventListeners = (
 };
 
 export const updateSchedule = () => {
-  const app = document.getElementById("app");
   resetHooks();
-  const diff = reconcile(currentVirtualNode!, App());
-  applyDiff(diff, app!);
+  const newVirtualNode = App();
+  const app = document.getElementById("app") as HTMLElement;
+  app.innerHTML = "";
+  const root = render(newVirtualNode);
+  app.appendChild(root);
+
+  // const diff = reconcile(currentVirtualNode!, newVirtualNode);
+  // applyDiff(diff, app);
+  currentVirtualNode = newVirtualNode;
 };
 
 export const applyDiff = (diff: DiffResult, node: HTMLElement | Text) => {
@@ -199,12 +214,12 @@ export const applyDiff = (diff: DiffResult, node: HTMLElement | Text) => {
   }
 
   // 속성 변경사항이 있는 경우 처리
-  if (diff.props) {
+  if (diff.props && diff.props.length > 0) {
     applyPropChanges(node as HTMLElement, diff.props);
   }
 
   // 자식 노드 변경사항이 있는 경우 처리
-  if (diff.children) {
+  if (diff.children && diff.children.length > 0) {
     applyChildChanges(node as HTMLElement, diff.children);
   }
 };
@@ -248,7 +263,6 @@ const applyStyleChanges = (
 };
 
 const applyChildChanges = (node: HTMLElement, childChanges: ChildChange[]) => {
-  console.log(childChanges);
   childChanges.forEach((childChange) => {
     const { type, index } = childChange;
 
@@ -261,7 +275,7 @@ const applyChildChanges = (node: HTMLElement, childChanges: ChildChange[]) => {
         return;
       }
 
-      //  마지막에 추가
+      // 마지막에 추가
       node.appendChild(newChildNode);
       return;
     }
@@ -270,14 +284,13 @@ const applyChildChanges = (node: HTMLElement, childChanges: ChildChange[]) => {
     if (type === "REMOVE_CHILD") {
       if (index < node.childNodes.length) {
         // 지정된 인덱스에 노드 제거
-        node.removeChild(node.childNodes[3]);
+        node.removeChild(node.childNodes[index]);
       }
-
       return;
     }
 
     // UPDATE_CHILD, 자식 노드 업데이트
-    if (index < node.childNodes.length) {
+    if (type === "UPDATE_CHILD" && index < node.childNodes.length) {
       // 재귀적으로 applyDiff 호출하여 자식 노드 업데이트
       applyDiff(
         childChange.change,

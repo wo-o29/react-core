@@ -77,22 +77,17 @@ export const reconcile = (
     progressVirtualNode.props
   );
 
-  if (
-    currentVirtualHTMLNode.props.children &&
-    progressVirtualHTMLNode.props.children
-  ) {
-    const childrenChanges = diffChildren(
-      currentVirtualHTMLNode.props.children,
-      progressVirtualHTMLNode.props.children
-    );
+  const childrenChanges = diffChildren(
+    currentVirtualHTMLNode.props.children!,
+    progressVirtualHTMLNode.props.children!
+  );
 
-    if (propsChanges.length > 0 || childrenChanges.length > 0) {
-      return {
-        type: "UPDATE",
-        props: propsChanges,
-        children: childrenChanges,
-      };
-    }
+  if (propsChanges.length > 0 || childrenChanges.length > 0) {
+    return {
+      type: "UPDATE",
+      props: propsChanges,
+      children: childrenChanges,
+    };
   }
 
   return { type: "NO_CHANGE" };
@@ -116,8 +111,9 @@ const diffProps = (oldProps: Props, newProps: Props): PropChange[] => {
       continue;
     }
 
-    if (Object.is(newValue, oldValue)) {
+    if (!Object.is(newValue, oldValue)) {
       // 값이 변경된 경우
+      // console.log("old : " + oldValue, "new : " + newValue);
       changes.push({ type: "SET_PROP", key, value: newValue });
     }
   }
@@ -137,34 +133,57 @@ const diffProps = (oldProps: Props, newProps: Props): PropChange[] => {
   return changes;
 };
 
+const flattenChildren = (
+  children: VirtualNode | VirtualNode[]
+): VirtualNode[] => {
+  const flattened: VirtualNode[] = [];
+  const toFlatten = Array.isArray(children) ? children : [children];
+
+  for (const child of toFlatten) {
+    if (!child) {
+      continue;
+    }
+
+    if (child.type === "fragment") {
+      flattened.push(...flattenChildren(child.props.children!));
+      continue;
+    }
+
+    flattened.push(child);
+  }
+
+  return flattened;
+};
+
 const diffChildren = (
-  oldChildren: VirtualNode[],
-  newChildren: VirtualNode[]
+  oldChildren: VirtualNode | VirtualNode[],
+  newChildren: VirtualNode | VirtualNode[]
 ): ChildChange[] => {
   const changes: ChildChange[] = [];
-  const maxLength = Math.max(oldChildren.length, newChildren.length);
+  const flattenedOldChildren = flattenChildren(oldChildren);
+  const flattenedNewChildren = flattenChildren(newChildren);
+  const maxLength = Math.max(
+    flattenedOldChildren.length,
+    flattenedNewChildren.length
+  );
 
   for (let i = 0; i < maxLength; i++) {
-    const oldChild = oldChildren[i];
-    const newChild = newChildren[i];
+    const oldChild = flattenedOldChildren[i];
+    const newChild = flattenedNewChildren[i];
 
     if (!oldChild && newChild) {
-      // 새로운 자식 추가
       changes.push({ type: "ADD_CHILD", node: newChild, index: i });
       continue;
     }
 
     if (oldChild && !newChild) {
-      // 기존 자식 제거
       changes.push({ type: "REMOVE_CHILD", index: i });
       continue;
     }
 
     if (oldChild && newChild) {
-      // 두 자식 모두 존재하면 reconcile 호출
       const childDiff = reconcile(oldChild, newChild);
       if (childDiff.type !== "NO_CHANGE") {
-        // 자식 노드 변경
         changes.push({ type: "UPDATE_CHILD", change: childDiff, index: i });
       }
     }

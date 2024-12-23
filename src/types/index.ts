@@ -14,7 +14,7 @@ export interface Props {
 
 // props + children 객체
 export interface PropsWithChildren extends Props {
-  children?: Children;
+  children?: Children | SingleChild;
 }
 
 export interface HTMLProps extends PropsWithChildren {
@@ -45,7 +45,7 @@ type Key = string | number | bigint;
 
 export interface OnlyKeyProps {
   key?: Key | null;
-  children?: Children;
+  children?: Children | SingleChild;
 }
 
 export type VirtualNode = FragmentNode | HTMLNode | TextNode;
