@@ -31,7 +31,7 @@ function Todo() {
   const handleToggleTodo = (id: number) => {
     setTodoList((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.isDone } : todo
+        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
       )
     );
   };

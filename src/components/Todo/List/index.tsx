@@ -13,7 +13,13 @@ function TodoList({ todoList, onDelete, onToggle }: TodoListProps) {
   }
 
   return (
-    <ul>
+    <ul
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
+    >
       {todoList.map((todo) => (
         <TodoItem todo={todo} onDelete={onDelete} onToggle={onToggle} />
       ))}

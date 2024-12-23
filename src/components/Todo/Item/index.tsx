@@ -10,20 +10,27 @@ function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   const { id, text, isDone } = todo;
 
   return (
-    <div
+    <li
       style={{
         width: "200px",
+        height: "50px",
         display: "flex",
         justifyContent: "space-between",
       }}
     >
       <input type="checkbox" checked={isDone} onClick={() => onToggle(id)} />
-      <p>{text}</p>
+      <p
+        style={{
+          textDecoration: isDone ? "line-through" : "none",
+        }}
+      >
+        {text}
+      </p>
 
       <button type="button" onClick={() => onDelete(id)}>
         삭제
       </button>
-    </div>
+    </li>
   );
 }
 
