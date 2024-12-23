@@ -73,6 +73,11 @@ export const render = (node: VirtualNode): Node => {
       return;
     }
 
+    if (typeof value === "boolean") {
+      value ? element.setAttribute(key, "") : element.removeAttribute(key);
+      return;
+    }
+
     // 일반 속성 설정
     element.setAttribute(key, value);
   });
