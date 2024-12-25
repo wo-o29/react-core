@@ -1,5 +1,6 @@
 interface Hook {
   memoizedState: any;
+  baseState: any;
   next: Hook | null;
 }
 
@@ -23,6 +24,7 @@ export const workInProgressHookFn = (): Hook => {
 
   const hook: Hook = {
     memoizedState: null,
+    baseState: null,
     next: null,
   };
 

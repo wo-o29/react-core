@@ -7,7 +7,7 @@ const useState = <T>(
   const hook = workInProgressHookFn();
 
   if (hook.memoizedState === null) {
-    hook.memoizedState =
+    hook.memoizedState = hook.baseState =
       typeof initialState === "function"
         ? (initialState as () => T)()
         : initialState;
@@ -16,11 +16,11 @@ const useState = <T>(
   const setState = (value: T | ((prev: T) => T)) => {
     const newState =
       typeof value === "function"
-        ? (value as (prev: T) => T)(hook.memoizedState)
+        ? (value as (prev: T) => T)(hook.baseState)
         : value;
 
-    if (!Object.is(newState, hook.memoizedState)) {
-      hook.memoizedState = newState;
+    if (!Object.is(newState, hook.baseState)) {
+      hook.memoizedState = hook.baseState = newState;
       updateSchedule();
     }
   };
