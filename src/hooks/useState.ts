@@ -2,7 +2,7 @@ import { updateSchedule } from "../dom/render";
 import { workInProgressHookFn } from "./hooks";
 
 const useState = <T>(
-  initialState: T | (() => T)
+  initialState?: T | (() => T)
 ): [T, (value: T | ((prev: T) => T)) => void] => {
   const hook = workInProgressHookFn();
 
